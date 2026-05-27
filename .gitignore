@@ -1,0 +1,52 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.next
+pom.xml.versionsBackup
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# IDEs and Editors
+.idea/
+*.iml
+*.iws
+.settings/
+.classpath
+.project
+.factorypath
+.springBeans
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS Files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Log files
+*.log
+logs/
+
+# Docker/Local Storage volumes
+postgres_data/
+redis_data/
+prometheus_data/
+grafana_data/
+docker-compose.override.yml
+hs_err_pid*
+
+# Local Configs
+.env
+
+# Local Runtimes / SDKs
+.jdk/
+.maven/
+

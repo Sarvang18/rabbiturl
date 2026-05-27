@@ -1,0 +1,88 @@
+spring:
+  application:
+    name: rabbiturl
+  datasource:
+    url: jdbc:postgresql://localhost:5432/rabbiturl
+    username: postgres
+    password: database@rmy1
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  sql:
+    init:
+      mode: always
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2000ms
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: 1
+      retries: 3
+      properties:
+        linger.ms: 5
+        batch.size: 16384
+    consumer:
+      group-id: rabbiturl-analytics-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.autorabit.rabbiturl.dto"
+
+server:
+  port: 8080
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+app:
+  base-url: rab.it
+  jwt:
+    secret: RabbitURL-Enterprise-Super-Secret-Key-2026-Minimum-32-Chars
+    access-token-expiry-ms: 900000
+    refresh-token-expiry-ms: 604800000
+  analytics:
+    default-days: 30
+    max-days: 365
+    retention-days: 90
+
+# ─── Actuator & Prometheus Metrics ───
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics,loggers
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+      probes:
+        enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    tags:
+      application: rabbiturl
+      environment: ${spring.profiles.active:dev}
+
+info:
+  app:
+    name: RabbitURL
+    description: Enterprise URL Shortener
+    version: 1.0.0
+    java-version: ${java.version}
